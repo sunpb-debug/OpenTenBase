@@ -1,0 +1,25 @@
+<Slide style={{ backgroundColor: '#FFFFFF', padding: 60 }}>
+  <Box style={{ width: 1160, height: 600, flexDirection: 'column', justifyContent: 'space-between' }}>
+
+    <Box style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+      <Text style={{ fontSize: 14, letterSpacing: 3, color: '#64748B' }}>OPENTENBASE　技术分享</Text>
+      <Text style={{ fontSize: 14, letterSpacing: 3, color: '#94A3B8' }}>GTM</Text>
+    </Box>
+
+    <Box style={{ flexDirection: 'column', gap: 30 }}>
+      <Box style={{ width: 72, height: 4, backgroundColor: '#F59E0B', borderRadius: 2 }} />
+      <Text style={{ fontSize: 84, fontWeight: 'bold', color: '#0F172A', lineHeight: 1.18 }}>
+        给整个集群<br /><span style={{ color: '#B45309' }}>发号</span>的那个人
+      </Text>
+      <Text style={{ fontSize: 24, color: '#475569', lineHeight: 1.6 }}>
+        OpenTenBase 的 GTM，到底在分布式事务里做了什么
+      </Text>
+    </Box>
+
+    <Box style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-end' }}>
+      <Text style={{ fontSize: 15, color: '#64748B' }}>CN 接活　·　DN 干活　·　GTM 发号</Text>
+      <Text style={{ fontSize: 15, color: '#64748B' }}>2026.11.07</Text>
+    </Box>
+
+  </Box>
+</Slide>

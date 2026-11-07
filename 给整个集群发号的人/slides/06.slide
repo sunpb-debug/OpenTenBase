@@ -1,0 +1,69 @@
+<Slide style={{ backgroundColor: '#FFFFFF', padding: 60 }}>
+  <Box style={{ width: 1160, height: 600, flexDirection: 'column' }}>
+
+    <Box style={{ flexDirection: 'row', alignItems: 'center', gap: 16 }}>
+      <Text style={{ fontSize: 14, letterSpacing: 2, color: '#2563EB' }}>04 / 四个误解</Text>
+      <Box style={{ flex: 1, height: 1, backgroundColor: '#E2E8F0' }} />
+    </Box>
+
+    <Text style={{ fontSize: 40, fontWeight: 'bold', color: '#0F172A', lineHeight: 1.25, marginTop: 16 }}>
+      这四句话，我一开始也信了
+    </Text>
+
+    <Box style={{ marginTop: 22, height: 470, border: '1px solid #E2E8F0', borderRadius: 16, paddingLeft: 32, paddingRight: 32, flexDirection: 'column' }}>
+
+      <Box style={{ height: 113, flexDirection: 'row', alignItems: 'center', borderBottom: '1px solid #F1F5F9' }}>
+        <Box style={{ width: 440, flexDirection: 'row', gap: 10 }}>
+          <Text style={{ fontSize: 18, color: '#CBD5E1' }}>✗</Text>
+          <Text style={{ fontSize: 18, color: '#94A3B8', textDecoration: 'line-through' }}>GTM 是主库，数据最终写到 GTM</Text>
+        </Box>
+        <Text style={{ width: 32, fontSize: 18, color: '#CBD5E1' }}>→</Text>
+        <Box style={{ flex: 1, flexDirection: 'column', gap: 4 }}>
+          <Text style={{ fontSize: 18, color: '#0F172A' }}>数据全在 DN，CN 只有元数据，GTM 里没有业务数据。</Text>
+          <Text style={{ fontSize: 14, color: '#94A3B8' }}>仓库 README · Overview</Text>
+        </Box>
+      </Box>
+
+      <Box style={{ height: 113, flexDirection: 'row', alignItems: 'center', borderBottom: '1px solid #F1F5F9' }}>
+        <Box style={{ width: 440, flexDirection: 'row', gap: 10 }}>
+          <Text style={{ fontSize: 18, color: '#CBD5E1' }}>✗</Text>
+          <Text style={{ fontSize: 18, color: '#94A3B8', textDecoration: 'line-through' }}>GTM 负责两阶段提交，是协调者</Text>
+        </Box>
+        <Text style={{ width: 32, fontSize: 18, color: '#CBD5E1' }}>→</Text>
+        <Box style={{ flex: 1, flexDirection: 'column', gap: 4 }}>
+          <Text style={{ fontSize: 18, color: '#0F172A' }}>协调者是 CN；GTM 只发 GXID 和快照，让各 DN 对号。</Text>
+          <Text style={{ fontSize: 14, color: '#94A3B8' }}>gtm.c · CommitPreparedTranGTM 注释</Text>
+        </Box>
+      </Box>
+
+      <Box style={{ height: 113, flexDirection: 'row', alignItems: 'center', borderBottom: '1px solid #F1F5F9' }}>
+        <Box style={{ width: 440, flexDirection: 'row', gap: 10 }}>
+          <Text style={{ fontSize: 18, color: '#CBD5E1' }}>✗</Text>
+          <Text style={{ fontSize: 18, color: '#94A3B8', textDecoration: 'line-through' }}>GXID 是 64 位，能撑 18 亿不重复</Text>
+        </Box>
+        <Text style={{ width: 32, fontSize: 18, color: '#CBD5E1' }}>→</Text>
+        <Box style={{ flex: 1, flexDirection: 'column', gap: 4 }}>
+          <Text style={{ fontSize: 18, color: '#0F172A' }}>源码里是 0xFFFFFFFF，32 位，还专门写了回卷处理。</Text>
+          <Text style={{ fontSize: 14, color: '#94A3B8' }}>src/include/gtm/gtm_gxid.h</Text>
+        </Box>
+      </Box>
+
+      <Box style={{ height: 113, flexDirection: 'row', alignItems: 'center' }}>
+        <Box style={{ width: 440, flexDirection: 'row', gap: 10 }}>
+          <Text style={{ fontSize: 18, color: '#CBD5E1' }}>✗</Text>
+          <Text style={{ fontSize: 18, color: '#94A3B8', textDecoration: 'line-through' }}>数据都过 GTM，所以它是瓶颈</Text>
+        </Box>
+        <Text style={{ width: 32, fontSize: 18, color: '#CBD5E1' }}>→</Text>
+        <Box style={{ flex: 1, flexDirection: 'column', gap: 4 }}>
+          <Text style={{ fontSize: 18, color: '#0F172A' }}>数据不流经 GTM，只有开事务、取快照才会访问它。</Text>
+          <Text style={{ fontSize: 14, color: '#94A3B8' }}>gtm.c 连接注释 + src/gtm/proxy</Text>
+        </Box>
+      </Box>
+
+    </Box>
+
+  </Box>
+  <Box style={{ position: 'absolute', right: 60, bottom: 24 }}>
+    <Text style={{ fontSize: 14, color: '#94A3B8' }}>06 / 09</Text>
+  </Box>
+</Slide>

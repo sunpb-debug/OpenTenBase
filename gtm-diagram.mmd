@@ -1,0 +1,19 @@
+flowchart TD
+    APP["应用 / 客户端"]
+    CN["CN 协调节点<br/>入口 · 解析 · 分布式计划 · 汇总<br/>只存元数据"]
+    GTM["GTM 全局事务管理器<br/>· 发全局事务号 GXID<br/>· 发全局快照（可见性）<br/>· 管全局序列 nextval"]
+    GTMS["GTM Standby<br/>故障切换"]
+    DN1["DN1 · 数据节点<br/>分片 1 · 本地事务 + WAL"]
+    DN2["DN2 · 数据节点<br/>分片 2 · 本地事务 + WAL"]
+    DN3["DN3 · 数据节点<br/>分片 3 · 本地事务 + WAL"]
+
+    APP -->|"① SQL"| CN
+    CN <-->|"② 领 GXID + 全局快照"| GTM
+    CN -->|"③ 带同一个 GXID / 快照下发分片"| DN1
+    CN --> DN2
+    CN --> DN3
+    DN1 -.->|"本地事务也要取号"| GTM
+    DN2 -.-> GTM
+    DN3 -.-> GTM
+    DN1 -.->|"④ 2PC 对号：PREPARE → COMMIT"| CN
+    GTM --- GTMS

@@ -1,0 +1,68 @@
+<Slide style={{ backgroundColor: '#FFFFFF', padding: 60 }}>
+  <Box style={{ width: 1160, height: 600, flexDirection: 'row', gap: 40 }}>
+
+    <Box style={{ width: 360, height: 600, backgroundColor: '#0F2A5C', borderRadius: 16, padding: 36, flexDirection: 'column', justifyContent: 'space-between' }}>
+      <Text style={{ fontSize: 14, letterSpacing: 4, color: '#93C5FD' }}>GTM</Text>
+
+      <Box style={{ flexDirection: 'column', gap: 18 }}>
+        <Text style={{ fontSize: 64, fontWeight: 'bold', color: '#FFFFFF', lineHeight: 1.15 }}>
+          全局<br />事务<br />管理器
+        </Text>
+        <Box style={{ width: 48, height: 4, backgroundColor: '#F59E0B', borderRadius: 2 }} />
+        <Text style={{ fontSize: 18, color: '#CBD5E1', lineHeight: 1.65 }}>
+          它不存一行业务数据，只让所有节点对「谁先谁后」达成一致。
+        </Text>
+      </Box>
+
+      <Text style={{ fontSize: 14, color: '#94A3B8' }}>Global Transaction Manager</Text>
+    </Box>
+
+    <Box style={{ flex: 1, flexDirection: 'column', justifyContent: 'space-between' }}>
+
+      <Box style={{ flexDirection: 'row', gap: 20, borderTop: '1px solid #E2E8F0', paddingTop: 24, paddingBottom: 24 }}>
+        <Text style={{ width: 40, fontSize: 14, color: '#2563EB', paddingTop: 8 }}>01</Text>
+        <Box style={{ flex: 1, flexDirection: 'column', gap: 8 }}>
+          <Text style={{ fontSize: 24, fontWeight: 'bold', color: '#0F172A' }}>发号：GXID</Text>
+          <Text style={{ fontSize: 18, color: '#334155', lineHeight: 1.6 }}>
+            每个事务开始前领一个全集群唯一的号，单调递增。它不是自增主键，是事务的身份证。
+          </Text>
+        </Box>
+      </Box>
+
+      <Box style={{ flexDirection: 'row', gap: 20, borderTop: '1px solid #E2E8F0', paddingTop: 24, paddingBottom: 24 }}>
+        <Text style={{ width: 40, fontSize: 14, color: '#2563EB', paddingTop: 8 }}>02</Text>
+        <Box style={{ flex: 1, flexDirection: 'column', gap: 8 }}>
+          <Text style={{ fontSize: 24, fontWeight: 'bold', color: '#0F172A' }}>发快照：此刻谁可见</Text>
+          <Text style={{ fontSize: 18, color: '#334155', lineHeight: 1.6 }}>
+            一份"哪些事务已提交"的清单。三台 DN 拿到同一份，才可能看到同一个版本的世界。
+          </Text>
+        </Box>
+      </Box>
+
+      <Box style={{ flexDirection: 'row', gap: 20, borderTop: '1px solid #E2E8F0', paddingTop: 24, paddingBottom: 24 }}>
+        <Text style={{ width: 40, fontSize: 14, color: '#2563EB', paddingTop: 8 }}>03</Text>
+        <Box style={{ flex: 1, flexDirection: 'column', gap: 8 }}>
+          <Text style={{ fontSize: 24, fontWeight: 'bold', color: '#0F172A' }}>管全局序列：nextval</Text>
+          <Text style={{ fontSize: 18, color: '#334155', lineHeight: 1.6 }}>
+            跨 DN 的序列必须统一发放，否则两台机器会发出同一个值，主键直接撞车。
+          </Text>
+        </Box>
+      </Box>
+
+      <Box style={{ flexDirection: 'row', gap: 20, borderTop: '1px solid #E2E8F0', paddingTop: 24, paddingBottom: 24 }}>
+        <Text style={{ width: 40, fontSize: 14, color: '#2563EB', paddingTop: 8 }}>04</Text>
+        <Box style={{ flex: 1, flexDirection: 'column', gap: 8 }}>
+          <Text style={{ fontSize: 24, fontWeight: 'bold', color: '#0F172A' }}>顺带：全局时间戳 GTS</Text>
+          <Text style={{ fontSize: 18, color: '#334155', lineHeight: 1.6 }}>
+            源码里还有 GetGlobalTimestampGTM()，给事务排出全局先后。这是它容易被忘掉的第四件事。
+          </Text>
+        </Box>
+      </Box>
+
+    </Box>
+  </Box>
+
+  <Box style={{ position: 'absolute', right: 60, bottom: 24 }}>
+    <Text style={{ fontSize: 14, color: '#94A3B8' }}>03 / 09</Text>
+  </Box>
+</Slide>

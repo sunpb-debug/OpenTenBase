@@ -1,0 +1,70 @@
+<Slide style={{ backgroundColor: '#FFFFFF', padding: 60 }}>
+  <Box style={{ width: 1160, height: 600, flexDirection: 'column' }}>
+
+    <Box style={{ flexDirection: 'row', alignItems: 'center', gap: 16 }}>
+      <Text style={{ fontSize: 14, letterSpacing: 2, color: '#2563EB' }}>03 / 一个生活类比</Text>
+      <Box style={{ flex: 1, height: 1, backgroundColor: '#E2E8F0' }} />
+    </Box>
+
+    <Text style={{ fontSize: 40, fontWeight: 'bold', color: '#0F172A', lineHeight: 1.25, marginTop: 16 }}>
+      把它想成连锁店的中央取号机
+    </Text>
+
+    <Box style={{ flexDirection: 'row', gap: 40, marginTop: 22, height: 296 }}>
+
+      <Box style={{ width: 560, height: 296, backgroundColor: '#FFF7ED', borderRadius: 16, padding: 26, flexDirection: 'column', gap: 16 }}>
+        <Text style={{ fontSize: 14, letterSpacing: 2, color: '#B45309' }}>生活里</Text>
+        <Box style={{ flexDirection: 'column', gap: 14 }}>
+          <Box style={{ flexDirection: 'column', gap: 4 }}>
+            <Text style={{ fontSize: 22, fontWeight: 'bold', color: '#0F172A' }}>三家分店 = 三个 DN</Text>
+            <Text style={{ fontSize: 18, color: '#57534E', lineHeight: 1.5 }}>各做各的，原料各存一份，店长不搬杯子。</Text>
+          </Box>
+          <Box style={{ flexDirection: 'column', gap: 4 }}>
+            <Text style={{ fontSize: 22, fontWeight: 'bold', color: '#0F172A' }}>中央取号机 = GTM</Text>
+            <Text style={{ fontSize: 18, color: '#57534E', lineHeight: 1.5 }}>全公司只有一台，号码不能自己编。</Text>
+          </Box>
+          <Box style={{ flexDirection: 'column', gap: 4 }}>
+            <Text style={{ fontSize: 22, fontWeight: 'bold', color: '#0F172A' }}>店长 = CN</Text>
+            <Text style={{ fontSize: 18, color: '#57534E', lineHeight: 1.5 }}>接单、拆单、把杯子收齐递给顾客。</Text>
+          </Box>
+        </Box>
+      </Box>
+
+      <Box style={{ width: 560, height: 296, backgroundColor: '#FFFFFF', border: '1px solid #E2E8F0', borderRadius: 16, padding: 26, flexDirection: 'column', gap: 16 }}>
+        <Text style={{ fontSize: 14, letterSpacing: 2, color: '#2563EB' }}>技术上</Text>
+        <Box style={{ flexDirection: 'column', gap: 14 }}>
+          <Box style={{ flexDirection: 'column', gap: 4 }}>
+            <Text style={{ fontSize: 22, fontWeight: 'bold', color: '#0F172A' }}>DN：只管自己那片数据</Text>
+            <Text style={{ fontSize: 18, color: '#475569', lineHeight: 1.5 }}>分片互不重叠，本地事务 + 本地 WAL。</Text>
+          </Box>
+          <Box style={{ flexDirection: 'column', gap: 4 }}>
+            <Text style={{ fontSize: 22, fontWeight: 'bold', color: '#0F172A' }}>GTM：只管号，不管数</Text>
+            <Text style={{ fontSize: 18, color: '#475569', lineHeight: 1.5 }}>发 GXID、发快照、发序列，三个动作。</Text>
+          </Box>
+          <Box style={{ flexDirection: 'column', gap: 4 }}>
+            <Text style={{ fontSize: 22, fontWeight: 'bold', color: '#0F172A' }}>CN：只管拼，不管存</Text>
+            <Text style={{ fontSize: 18, color: '#475569', lineHeight: 1.5 }}>拆计划、下发、协调 2PC、汇总结果。</Text>
+          </Box>
+        </Box>
+      </Box>
+
+    </Box>
+
+    <Box style={{ marginTop: 14, height: 164, border: '1px dashed #FDBA74', borderRadius: 12, padding: 18, flexDirection: 'column', gap: 8 }}>
+      <Text style={{ fontSize: 16, fontWeight: 'bold', color: '#B45309' }}>类比的边界 —— 这三条别混</Text>
+      <Text style={{ fontSize: 15, color: '#475569', lineHeight: 1.5 }}>
+        ① 取号机不碰原料，GTM 也确实不存业务数据，这条成立
+      </Text>
+      <Text style={{ fontSize: 15, color: '#475569', lineHeight: 1.5 }}>
+        ② 取号机坏了开不了新单，GTM 同理 —— 所以官方要部署 Standby
+      </Text>
+      <Text style={{ fontSize: 15, color: '#475569', lineHeight: 1.5 }}>
+        ③ 全局序列、GTS、Proxy 在奶茶店里没有对应物，别硬套
+      </Text>
+    </Box>
+
+  </Box>
+  <Box style={{ position: 'absolute', right: 60, bottom: 24 }}>
+    <Text style={{ fontSize: 14, color: '#94A3B8' }}>05 / 09</Text>
+  </Box>
+</Slide>

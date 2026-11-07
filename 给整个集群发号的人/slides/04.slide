@@ -1,0 +1,91 @@
+<Slide style={{ backgroundColor: '#FFFFFF', padding: 60 }}>
+  <Box style={{ width: 1160, height: 600, flexDirection: 'column' }}>
+
+    <Box style={{ flexDirection: 'row', alignItems: 'center', gap: 16 }}>
+      <Text style={{ fontSize: 14, letterSpacing: 2, color: '#2563EB' }}>02 / 一条 SQL 的旅程</Text>
+      <Box style={{ flex: 1, height: 1, backgroundColor: '#E2E8F0' }} />
+    </Box>
+
+    <Text style={{ fontSize: 40, fontWeight: 'bold', color: '#0F172A', lineHeight: 1.25, marginTop: 16 }}>
+      从客户端敲下回车，到结果返回
+    </Text>
+
+    <Box style={{ flexDirection: 'row', marginTop: 24, height: 340 }}>
+
+      <Box style={{ width: 260, height: 340, backgroundColor: '#F8FAFC', borderRadius: 14, padding: 22, flexDirection: 'column' }}>
+        <Box style={{ width: 40, height: 40, borderRadius: 20, backgroundColor: '#2563EB', alignItems: 'center', justifyContent: 'center' }}>
+          <Text style={{ fontSize: 18, fontWeight: 'bold', color: '#FFFFFF' }}>1</Text>
+        </Box>
+        <Text style={{ fontSize: 22, fontWeight: 'bold', color: '#0F172A', marginTop: 18, lineHeight: 1.3 }}>接入 · 领号</Text>
+        <Text style={{ fontSize: 18, color: '#475569', lineHeight: 1.6, marginTop: 10 }}>
+          客户端只连 CN。CN 开事务时，先向 GTM 领 GXID 和一份全局快照。
+        </Text>
+        <Box style={{ marginTop: 'auto', paddingTop: 16, borderTop: '1px solid #E2E8F0' }}>
+          <Text style={{ fontSize: 14, color: '#64748B' }}>拿到：事务的身份证</Text>
+        </Box>
+      </Box>
+
+      <Box style={{ width: 40, height: 340, alignItems: 'center', justifyContent: 'center' }}>
+        <Text style={{ fontSize: 22, color: '#CBD5E1' }}>→</Text>
+      </Box>
+
+      <Box style={{ width: 260, height: 340, backgroundColor: '#F8FAFC', borderRadius: 14, padding: 22, flexDirection: 'column' }}>
+        <Box style={{ width: 40, height: 40, borderRadius: 20, backgroundColor: '#2563EB', alignItems: 'center', justifyContent: 'center' }}>
+          <Text style={{ fontSize: 18, fontWeight: 'bold', color: '#FFFFFF' }}>2</Text>
+        </Box>
+        <Text style={{ fontSize: 22, fontWeight: 'bold', color: '#0F172A', marginTop: 18, lineHeight: 1.3 }}>拆片 · 下发</Text>
+        <Text style={{ fontSize: 18, color: '#475569', lineHeight: 1.6, marginTop: 10 }}>
+          把 SQL 拆成能在各 DN 执行的片段，带着同一份快照一起发下去。
+        </Text>
+        <Box style={{ marginTop: 'auto', paddingTop: 16, borderTop: '1px solid #E2E8F0' }}>
+          <Text style={{ fontSize: 14, color: '#64748B' }}>拿到：N 个分片计划</Text>
+        </Box>
+      </Box>
+
+      <Box style={{ width: 40, height: 340, alignItems: 'center', justifyContent: 'center' }}>
+        <Text style={{ fontSize: 22, color: '#CBD5E1' }}>→</Text>
+      </Box>
+
+      <Box style={{ width: 260, height: 340, backgroundColor: '#F8FAFC', borderRadius: 14, padding: 22, flexDirection: 'column' }}>
+        <Box style={{ width: 40, height: 40, borderRadius: 20, backgroundColor: '#2563EB', alignItems: 'center', justifyContent: 'center' }}>
+          <Text style={{ fontSize: 18, fontWeight: 'bold', color: '#FFFFFF' }}>3</Text>
+        </Box>
+        <Text style={{ fontSize: 22, fontWeight: 'bold', color: '#0F172A', marginTop: 18, lineHeight: 1.3 }}>本地执行</Text>
+        <Text style={{ fontSize: 18, color: '#475569', lineHeight: 1.6, marginTop: 10 }}>
+          数据不动地方。DN 用这份快照判断版本可见性，顺手把改动写进本地 WAL。
+        </Text>
+        <Box style={{ marginTop: 'auto', paddingTop: 16, borderTop: '1px solid #E2E8F0' }}>
+          <Text style={{ fontSize: 14, color: '#64748B' }}>拿到：N 份局部结果</Text>
+        </Box>
+      </Box>
+
+      <Box style={{ width: 40, height: 340, alignItems: 'center', justifyContent: 'center' }}>
+        <Text style={{ fontSize: 22, color: '#CBD5E1' }}>→</Text>
+      </Box>
+
+      <Box style={{ width: 260, height: 340, backgroundColor: '#F8FAFC', borderRadius: 14, padding: 22, flexDirection: 'column' }}>
+        <Box style={{ width: 40, height: 40, borderRadius: 20, backgroundColor: '#B45309', alignItems: 'center', justifyContent: 'center' }}>
+          <Text style={{ fontSize: 18, fontWeight: 'bold', color: '#FFFFFF' }}>4</Text>
+        </Box>
+        <Text style={{ fontSize: 22, fontWeight: 'bold', color: '#0F172A', marginTop: 18, lineHeight: 1.3 }}>对号 · 提交</Text>
+        <Text style={{ fontSize: 18, color: '#475569', lineHeight: 1.6, marginTop: 10 }}>
+          跨 DN 的写走两阶段提交。PREPARE 到 COMMIT 用的是同一个 GXID，CN 汇总。
+        </Text>
+        <Box style={{ marginTop: 'auto', paddingTop: 16, borderTop: '1px solid #E2E8F0' }}>
+          <Text style={{ fontSize: 14, color: '#64748B' }}>拿到：一次一致的提交</Text>
+        </Box>
+      </Box>
+
+    </Box>
+
+    <Box style={{ height: 90, marginTop: 24, backgroundColor: '#0F2A5C', borderRadius: 12, flexDirection: 'row', alignItems: 'center', paddingLeft: 28, paddingRight: 28 }}>
+      <Text style={{ fontSize: 20, color: '#E2E8F0', lineHeight: 1.5 }}>
+        四步里 GTM 只出现一次，但少了这一次，跨机器的「<span style={{ color: '#FBBF24', fontWeight: 'bold' }}>同时</span>」就不存在。
+      </Text>
+    </Box>
+
+  </Box>
+  <Box style={{ position: 'absolute', right: 60, bottom: 24 }}>
+    <Text style={{ fontSize: 14, color: '#94A3B8' }}>04 / 09</Text>
+  </Box>
+</Slide>

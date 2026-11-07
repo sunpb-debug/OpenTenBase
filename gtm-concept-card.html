@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>GTM 是什么 · OpenTenBase 概念卡</title>
+<style>
+  :root{
+    --ink:#1f2328; --ink-2:#4a5563; --ink-3:#7a8798;
+    --line:#e3e7ec; --bg:#eef1f5; --card:#ffffff;
+    --blue:#185fa5; --blue-dark:#0c447c; --blue-bg:#e6f1fb;
+    --coral:#993c1d; --coral-dark:#712b13; --coral-bg:#faece7;
+    --green:#3b6d11; --green-dark:#27500a; --green-bg:#eaf3de;
+    --gray-bg:#f1efe8;
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0; padding:48px 20px 64px; background:var(--bg); color:var(--ink);
+    font-family:"Microsoft YaHei","PingFang SC","Hiragino Sans GB",system-ui,-apple-system,sans-serif;
+    font-size:15px; line-height:1.75;
+  }
+  .card{
+    max-width:960px; margin:0 auto; background:var(--card); border-radius:20px;
+    padding:52px 56px 44px; box-shadow:0 1px 2px rgba(16,24,40,.04),0 12px 40px rgba(16,24,40,.07);
+  }
+  .eyebrow{
+    display:flex; align-items:center; gap:10px; font-size:12px; letter-spacing:.14em;
+    color:var(--ink-3); text-transform:uppercase; margin-bottom:18px;
+  }
+  .eyebrow span.dot{width:6px;height:6px;border-radius:50%;background:var(--coral)}
+  h1{font-size:34px; line-height:1.3; margin:0 0 10px; letter-spacing:-.01em}
+  h1 em{font-style:normal; color:var(--coral-dark)}
+  .lede{font-size:16px; color:var(--ink-2); margin:0 0 30px; max-width:44em}
+  .oneline{
+    border-left:3px solid var(--coral); background:var(--coral-bg);
+    padding:16px 20px; border-radius:0 10px 10px 0; margin:0 0 40px; font-size:15.5px;
+  }
+  .oneline b{color:var(--coral-dark)}
+  section{margin:0 0 40px}
+  h2{font-size:19px; margin:0 0 14px; display:flex; align-items:center; gap:12px}
+  h2 .num{
+    flex:0 0 auto; width:26px; height:26px; border-radius:8px; background:#f3f4f6;
+    color:var(--ink-3); font-size:12.5px; display:flex; align-items:center; justify-content:center;
+    font-weight:400; letter-spacing:.02em;
+  }
+  p{margin:0 0 12px}
+  .fig{
+    border:1px solid var(--line); border-radius:16px; padding:22px 18px 12px; background:#fff;
+  }
+  .fig svg{display:block; width:100%; height:auto}
+  .caption{font-size:12.5px; color:var(--ink-3); text-align:center; margin:8px 0 0}
+  .cols{display:grid; grid-template-columns:1fr 1fr; gap:18px}
+  .box{border:1px solid var(--line); border-radius:12px; padding:16px 18px; background:#fcfcfd}
+  .box h3{margin:0 0 6px; font-size:14px; font-weight:500; color:var(--ink)}
+  .box p{margin:0; font-size:13.5px; color:var(--ink-2); line-height:1.7}
+  .steps{counter-reset:s; list-style:none; padding:0; margin:0}
+  .steps li{
+    position:relative; padding:0 0 14px 34px; font-size:14px; color:var(--ink-2);
+  }
+  .steps li:before{
+    counter-increment:s; content:counter(s); position:absolute; left:0; top:2px;
+    width:22px; height:22px; border-radius:50%; background:var(--blue-bg); color:var(--blue-dark);
+    font-size:11.5px; display:flex; align-items:center; justify-content:center;
+  }
+  .steps li b{color:var(--ink); font-weight:500}
+  .steps li:last-child{padding-bottom:0}
+  .analogy{background:#fff8f2; border:1px solid #f0d9c8; border-radius:14px; padding:20px 22px}
+  .analogy h3{margin:0 0 8px; font-size:14px; color:#8a4a2e; font-weight:500}
+  .analogy p{font-size:14px; color:#5d4436; margin:0 0 10px}
+  .analogy .limit{
+    border-top:1px dashed #e6c8b3; margin-top:14px; padding-top:12px; font-size:13px; color:#7a5a48;
+  }
+  .analogy .limit b{color:#8a4a2e}
+  table{width:100%; border-collapse:collapse; font-size:13.5px}
+  th{
+    text-align:left; font-weight:500; color:var(--ink-3); font-size:12px; letter-spacing:.04em;
+    padding:0 12px 9px 0; border-bottom:1px solid var(--line);
+  }
+  td{padding:11px 12px 11px 0; border-bottom:1px solid #f0f2f5; vertical-align:top; color:var(--ink-2)}
+  tr:last-child td{border-bottom:none}
+  td.k{color:var(--ink)}
+  .x,.v{font-weight:500; font-size:13px; white-space:nowrap}
+  .x{color:#a32d2d} .v{color:#27500a}
+  .myth{margin:0; padding:0; list-style:none}
+  .myth li{
+    padding:14px 0; border-bottom:1px solid #f0f2f5; display:grid;
+    grid-template-columns:22px 1fr; gap:10px; font-size:14px;
+  }
+  .myth li:last-child{border-bottom:none}
+  .myth .mark{font-size:14px; line-height:1.5}
+  .myth .wrong{color:#8a8f98; text-decoration:line-through; text-decoration-color:#d7b3b3}
+  .myth .right{color:var(--ink); display:block; margin-top:2px}
+  .myth .src{font-size:12px; color:var(--ink-3); display:block; margin-top:3px}
+  code{
+    font-family:"Cascadia Mono",Consolas,"SF Mono",Menlo,monospace;
+    font-size:.92em; background:#f4f5f7; padding:1px 5px; border-radius:4px; color:#334155;
+  }
+  .quiz{display:grid; gap:12px}
+  .q{border:1px solid var(--line); border-radius:12px; padding:14px 16px; background:#fcfcfd}
+  .q p{margin:0; font-size:14px; color:var(--ink)}
+  .q .ans{margin:8px 0 0; font-size:13px; color:var(--ink-3)}
+  .script{
+    background:#f7f8fa; border-radius:12px; padding:16px 18px; font-size:13.5px;
+    color:var(--ink-2); border:1px dashed #d9dee5;
+  }
+  .script b{color:var(--ink); font-weight:500}
+  .refs{list-style:none; padding:0; margin:0; font-size:13.5px}
+  .refs li{padding:8px 0; border-bottom:1px solid #f0f2f5}
+  .refs li:last-child{border-bottom:none}
+  .refs a{color:var(--blue); text-decoration:none; word-break:break-all}
+  .refs a:hover{text-decoration:underline}
+  .refs span{display:block; color:var(--ink-3); font-size:12.5px}
+  details{border:1px solid var(--line); border-radius:12px; padding:12px 16px; background:#fcfcfd}
+  summary{cursor:pointer; font-size:13.5px; color:var(--ink-2)}
+  details pre{
+    margin:12px 0 0; overflow:auto; font-size:12.5px; line-height:1.6; color:#334155;
+    background:#f7f8fa; padding:14px; border-radius:8px;
+  }
+  .repolink{
+    display:flex; align-items:center; gap:14px; margin-top:8px; padding:16px 20px;
+    border:1px solid #dbe3ee; background:#f7f9fc; border-radius:12px;
+  }
+  .repolink .label{
+    flex:0 0 auto; font-size:11.5px; letter-spacing:.08em; color:#7a8798;
+    border-right:1px solid #dbe3ee; padding-right:14px;
+  }
+  .repolink a{
+    font-family:"Cascadia Mono",Consolas,"SF Mono",Menlo,monospace;
+    font-size:14px; color:var(--blue); text-decoration:none; word-break:break-all;
+  }
+  .repolink a:hover{text-decoration:underline}
+  footer{
+    margin-top:36px; padding-top:18px; border-top:1px solid var(--line);
+    font-size:12.5px; color:var(--ink-3); display:flex; justify-content:space-between; gap:16px;
+  }
+  @media (max-width:760px){
+    body{padding:20px 10px 40px}
+    .card{padding:28px 20px}
+    h1{font-size:26px}
+    .cols{grid-template-columns:1fr}
+    footer{flex-direction:column}
+  }
+  @media print{
+    body{background:#fff; padding:0}
+    .card{box-shadow:none; padding:0; border-radius:0}
+    section{break-inside:avoid}
+    details{display:none}
+  }
+</style>
+</head>
+<body>
+<div class="card">
+
+  <div class="eyebrow"><span class="dot"></span>OpenTenBase 概念卡 · 02</div>
+  <h1>GTM：给整个集群<em>发号</em>的那个节点</h1>
+  <p class="lede">OpenTenBase 有三个角色：CN 接活、DN 干活、GTM 发号。前两个好理解，"发号"的 GTM 最容易被忽略，也最容易被讲错——它既不存数据，也不跑 SQL。</p>
+
+  <div class="oneline">
+    <b>一句话：</b>GTM 是集群里唯一有权发号的地方。每个事务开始前，都要向它领一个全集群唯一的号（GXID）和一份"此刻谁可见"的快照；它不存业务数据。
+  </div>
+
+  <section>
+    <h2><span class="num">01</span>一张图：一条 SQL 的旅程</h2>
+    <div class="fig">
+      <svg viewBox="0 0 680 444" width="100%" role="img" aria-labelledby="t1 d1">
+        <title id="t1">OpenTenBase 中 GTM 与 CN、DN 的关系</title>
+        <desc id="d1">客户端连接 CN，CN 向 GTM 领取全局事务号 GXID 与全局快照，再把分片计划下发给三个数据节点 DN1 至 DN3，DN 各自执行本地事务并写 WAL，最后由 CN 汇总结果。</desc>
+        <defs>
+          <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+            <path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </marker>
+        </defs>
+
+        <rect x="250" y="16" width="180" height="44" rx="10" fill="#F1EFE8" stroke="#5F5E5A" stroke-width="0.5"/>
+        <text x="340" y="38" text-anchor="middle" dominant-baseline="central" font-size="13" fill="#444441">应用 / 客户端</text>
+
+        <line x1="340" y1="60" x2="340" y2="100" stroke="#888780" stroke-width="1.5" marker-end="url(#arrow)"/>
+        <circle cx="340" cy="80" r="11" fill="#FFFFFF" stroke="#B4B2A9" stroke-width="0.8"/>
+        <text x="340" y="80" text-anchor="middle" dominant-baseline="central" font-size="11" fill="#5F5E5A">1</text>
+        <text x="358" y="80" dominant-baseline="central" font-size="11" fill="#5F5E5A">SQL</text>
+
+        <rect x="110" y="100" width="300" height="74" rx="12" fill="#E6F1FB" stroke="#185FA5" stroke-width="0.5"/>
+        <text x="260" y="124" text-anchor="middle" dominant-baseline="central" font-size="14" fill="#0C447C">CN 协调节点</text>
+        <text x="260" y="146" text-anchor="middle" dominant-baseline="central" font-size="11" fill="#185FA5">SQL 入口 · 解析 · 分布式计划 · 汇总</text>
+        <text x="260" y="162" text-anchor="middle" dominant-baseline="central" font-size="11" fill="#5F7FA8">只存元数据，不存业务数据</text>
+
+        <rect x="480" y="100" width="160" height="152" rx="12" fill="#FAECE7" stroke="#993C1D" stroke-width="0.5"/>
+        <text x="560" y="126" text-anchor="middle" dominant-baseline="central" font-size="14" fill="#712B13">GTM</text>
+        <text x="560" y="144" text-anchor="middle" dominant-baseline="central" font-size="11" fill="#993C1D">全局事务管理器</text>
+        <line x1="496" y1="155" x2="624" y2="155" stroke="#E8BBA6" stroke-width="0.5"/>
+        <text x="496" y="173" dominant-baseline="central" font-size="11" fill="#8A4A2E">· 发 GXID（事务号）</text>
+        <text x="496" y="193" dominant-baseline="central" font-size="11" fill="#8A4A2E">· 发全局快照</text>
+        <text x="496" y="213" dominant-baseline="central" font-size="11" fill="#8A4A2E">· 全局序列 nextval</text>
+        <text x="560" y="236" text-anchor="middle" dominant-baseline="central" font-size="11" fill="#A9715A">主 / 备 + GTM Proxy</text>
+
+        <line x1="412" y1="130" x2="478" y2="130" stroke="#993C1D" stroke-width="1.5" marker-start="url(#arrow)" marker-end="url(#arrow)"/>
+        <circle cx="445" cy="130" r="11" fill="#FFFFFF" stroke="#DD9F84" stroke-width="0.8"/>
+        <text x="445" y="130" text-anchor="middle" dominant-baseline="central" font-size="11" fill="#993C1D">2</text>
+        <text x="445" y="153" text-anchor="middle" dominant-baseline="central" font-size="11" fill="#993C1D">GXID+快照</text>
+
+        <path d="M260 174 V280" fill="none" stroke="#888780" stroke-width="1.5"/>
+        <path d="M130 280 H550" fill="none" stroke="#888780" stroke-width="1.5"/>
+        <path d="M130 280 V306" fill="none" stroke="#888780" stroke-width="1.5" marker-end="url(#arrow)"/>
+        <path d="M340 280 V306" fill="none" stroke="#888780" stroke-width="1.5" marker-end="url(#arrow)"/>
+        <path d="M550 280 V306" fill="none" stroke="#888780" stroke-width="1.5" marker-end="url(#arrow)"/>
+        <circle cx="92" cy="258" r="11" fill="#FFFFFF" stroke="#B4B2A9" stroke-width="0.8"/>
+        <text x="92" y="258" text-anchor="middle" dominant-baseline="central" font-size="11" fill="#5F5E5A">3</text>
+        <text x="108" y="258" dominant-baseline="central" font-size="11" fill="#5F5E5A">同一快照，下发分片</text>
+
+        <rect x="40" y="306" width="180" height="76" rx="12" fill="#EAF3DE" stroke="#3B6D11" stroke-width="0.5"/>
+        <text x="130" y="332" text-anchor="middle" dominant-baseline="central" font-size="13" fill="#27500A">DN1 · 数据节点</text>
+        <text x="130" y="352" text-anchor="middle" dominant-baseline="central" font-size="11" fill="#3B6D11">分片 1 ｜ 本地事务</text>
+        <text x="130" y="368" text-anchor="middle" dominant-baseline="central" font-size="11" fill="#6E8A4A">WAL 落盘 · 本地 MVCC</text>
+
+        <rect x="250" y="306" width="180" height="76" rx="12" fill="#EAF3DE" stroke="#3B6D11" stroke-width="0.5"/>
+        <text x="340" y="332" text-anchor="middle" dominant-baseline="central" font-size="13" fill="#27500A">DN2 · 数据节点</text>
+        <text x="340" y="352" text-anchor="middle" dominant-baseline="central" font-size="11" fill="#3B6D11">分片 2 ｜ 本地事务</text>
+        <text x="340" y="368" text-anchor="middle" dominant-baseline="central" font-size="11" fill="#6E8A4A">WAL 落盘 · 本地 MVCC</text>
+
+        <rect x="460" y="306" width="180" height="76" rx="12" fill="#EAF3DE" stroke="#3B6D11" stroke-width="0.5"/>
+        <text x="550" y="332" text-anchor="middle" dominant-baseline="central" font-size="13" fill="#27500A">DN3 · 数据节点</text>
+        <text x="550" y="352" text-anchor="middle" dominant-baseline="central" font-size="11" fill="#3B6D11">分片 3 ｜ 本地事务</text>
+        <text x="550" y="368" text-anchor="middle" dominant-baseline="central" font-size="11" fill="#6E8A4A">WAL 落盘 · 本地 MVCC</text>
+
+        <line x1="40" y1="402" x2="640" y2="402" stroke="#D3D1C7" stroke-width="0.5" stroke-dasharray="3 4"/>
+        <circle cx="40" cy="424" r="9" fill="#FFFFFF" stroke="#B4B2A9" stroke-width="0.8"/>
+        <text x="40" y="424" text-anchor="middle" dominant-baseline="central" font-size="11" fill="#5F5E5A">1</text>
+        <text x="56" y="424" dominant-baseline="central" font-size="11" fill="#5F5E5A">客户端只连 CN</text>
+
+        <circle cx="190" cy="424" r="9" fill="#FFFFFF" stroke="#B4B2A9" stroke-width="0.8"/>
+        <text x="190" y="424" text-anchor="middle" dominant-baseline="central" font-size="11" fill="#5F5E5A">2</text>
+        <text x="206" y="424" dominant-baseline="central" font-size="11" fill="#5F5E5A">向 GTM 要号取快照</text>
+
+        <circle cx="340" cy="424" r="9" fill="#FFFFFF" stroke="#B4B2A9" stroke-width="0.8"/>
+        <text x="340" y="424" text-anchor="middle" dominant-baseline="central" font-size="11" fill="#5F5E5A">3</text>
+        <text x="356" y="424" dominant-baseline="central" font-size="11" fill="#5F5E5A">带同一快照下发</text>
+
+        <circle cx="490" cy="424" r="9" fill="#FFFFFF" stroke="#B4B2A9" stroke-width="0.8"/>
+        <text x="490" y="424" text-anchor="middle" dominant-baseline="central" font-size="11" fill="#5F5E5A">4</text>
+        <text x="506" y="424" dominant-baseline="central" font-size="11" fill="#5F5E5A">2PC 提交 / 回滚</text>
+      </svg>
+      <p class="caption">图 1　GTM 不参与数据搬运，只在"开事务"这一步被所有节点询问</p>
+    </div>
+  </section>
+
+  <section>
+    <h2><span class="num">02</span>这条路上到底发生了什么</h2>
+    <ol class="steps">
+      <li><b>连 CN。</b>客户端只连协调节点。CN 上只有元数据，业务数据一行都不在这里。</li>
+      <li><b>要号 + 取快照。</b>CN 开事务时向 GTM 领一个 GXID，并取一份全局快照——它决定了"此刻哪些事务算已提交"。</li>
+      <li><b>下发分片。</b>CN 把 SQL 拆成能在各 DN 执行的片段，连同同一个 GXID 和同一份快照一起发下去。三个 DN 看到的是同一个"版本的世界"。</li>
+      <li><b>各 DN 执行。</b>数据在本地，事务也在本地跑；MVCC 判断某行版本可不可见时，用的是 GTM 给的那份快照，而不是自己的表。</li>
+      <li><b>对号入座地提交。</b>跨 DN 的写要两阶段提交（PREPARE → COMMIT）。协调者是 CN，GTM 给的那个 GXID 就是各 DN 用来确认"我们提交的是同一个事务"的凭证。</li>
+      <li><b>汇总。</b>CN 把各 DN 的结果拼回去，返回给客户端。</li>
+    </ol>
+  </section>
+
+  <section>
+    <h2><span class="num">03</span>GTM 到底管四件事</h2>
+    <div class="cols">
+      <div class="box">
+        <h3>发号：GXID</h3>
+        <p>全集群唯一、单调递增的事务号。源码里上限是 <code>0xFFFFFFFF</code>，并且专门写了回卷处理。</p>
+      </div>
+      <div class="box">
+        <h3>发快照：可见性</h3>
+        <p>让分散在不同机器上的同一个事务，对"谁已提交"有同一份答案——这是分布式 MVCC 能成立的前提。</p>
+      </div>
+      <div class="box">
+        <h3>管全局对象：序列</h3>
+        <p>跨 DN 的 <code>nextval()</code> 必须由它统一发，否则两个 DN 会发出同一个值，主键直接撞车。</p>
+      </div>
+      <div class="box">
+        <h3>顺带：全局时间戳</h3>
+        <p>源码里还有 <code>GetGlobalTimestampGTM()</code>，用于给出全局时间戳（GTS）。</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2><span class="num">04</span>生活类比：连锁奶茶店的中央取号机</h2>
+    <div class="analogy">
+      <h3>取号机 + 标准挂钟</h3>
+      <p>一条街上开了三家分店（三个 DN），每家店都会自己做奶茶（执行查询），但号码不能自己编——全公司只有一台中央取号机（GTM）。顾客拿到 37 号，无论去哪家店，37 号只有一个人。取号机上还挂着一面标准钟，所有店按它判断"谁先到、谁后到"。</p>
+      <p>店长（CN）负责接单、把一张大单拆给几家店做，最后把杯子收齐递给顾客。店长不自己摇奶茶。</p>
+      <div class="limit">
+        <b>类比的边界（必须说清）：</b>① 取号机不发原料、不碰数据——这点成立，GTM 里没有业务数据。② "取号机坏了就开不了新单"也是真的：新事务领不到号就走不下去，所以官方要用 Standby 来避免 GTM 单点。③ <b>类比覆盖不到</b>的部分：全局序列、全局时间戳、GTM Proxy 的连接汇聚，奶茶店里没有对应物，别硬套。
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2><span class="num">05</span>四个常见误解</h2>
+    <ul class="myth">
+      <li>
+        <span class="mark x">✗</span>
+        <div>
+          <span class="wrong">"GTM 是主库，数据最终落到 GTM。"</span>
+          <span class="right">所有用户数据都在 DN，CN 只存元数据，GTM 里没有任何业务数据。它管的是"事务的顺序与可见性"，不是"行"。<span class="src">依据：仓库 README 架构段原文</span></span>
+        </div>
+      </li>
+      <li>
+        <span class="mark x">✗</span>
+        <div>
+          <span class="wrong">"GTM 负责两阶段提交，是分布式事务的协调者。"</span>
+          <span class="right">协调者是 CN。GTM 只提供 GXID 和快照，让同一个事务在各 DN 上"对得上号"。<span class="src">依据：gtm.c 中 CommitPreparedTranGTM 注释——提交 PREPARE 时用的那个 gxid</span></span>
+        </div>
+      </li>
+      <li>
+        <span class="mark x">✗</span>
+        <div>
+          <span class="wrong">"GXID 是 64 位整数，能撑 18 亿以上不重复。"</span>
+          <span class="right">不少网文这么写。源码里 <code>MaxGlobalTransactionId</code> 是 <code>0xFFFFFFFF</code>，即 32 位，而且代码显式处理了回卷（<code>GlobalTransactionIdAdvance</code>）。<span class="src">依据：src/include/gtm/gtm_gxid.h —— 这条正好说明二手文章不能当事实</span></span>
+        </div>
+      </li>
+      <li>
+        <span class="mark x">✗</span>
+        <div>
+          <span class="wrong">"数据都要过 GTM，所以它是性能瓶颈。"</span>
+          <span class="right">数据不流经 GTM。只有开事务、取快照、取序列这类控制请求会访问它，且部署上还有 GTM Proxy 分担连接。<span class="src">依据：gtm.c 注释（每个 CN/DN 进程各自建一条 GTM 连接）+ src/gtm/proxy 目录</span></span>
+        </div>
+      </li>
+    </ul>
+  </section>
+
+  <section>
+    <h2><span class="num">06</span>逐项核对：图上每句话的出处</h2>
+    <table>
+      <thead>
+        <tr><th style="width:38%">图 / 文中的表述</th><th style="width:34%">依据</th><th>出处</th></tr>
+      </thead>
+      <tbody>
+        <tr><td class="k">数据全在 DN，CN 只有元数据</td><td>README 原文 "All user data resides in the DataNodes, the CoordinateNode contains only metadata"</td><td>仓库 README · Overview</td></tr>
+        <tr><td class="k">CN 拆查询、DN 执行、CN 收结果</td><td>README 原文 "divide up the query into fragments ... and collect the results"</td><td>仓库 README · Overview</td></tr>
+        <tr><td class="k">GTM 管事务信息与全局对象（序列）</td><td>官方文档："负责管理集群事务信息，同时管理集群的全局对象，比如序列等"</td><td>docs.opentenbase.org 快速入门</td></tr>
+        <tr><td class="k">事务开始 → 取快照 → 提交/回滚</td><td><code>gtm.c</code> 调用链 BeginTranGTM → GetSnapshotGTM → PrepareTranGTM / CommitTranGTM</td><td>src/backend/access/transam/gtm.c</td></tr>
+        <tr><td class="k">GXID 32 位上限、有回卷</td><td><code>#define MaxGlobalTransactionId ((GlobalTransactionId) 0xFFFFFFFF)</code>，配套 <code>GlobalTransactionIdAdvance</code></td><td>src/include/gtm/gtm_gxid.h</td></tr>
+        <tr><td class="k">2PC 的 PREPARE / COMMIT 用同一个 gxid 关联</td><td>代码注释 "commit the gxid used for PREPARE TRANSACTION and for COMMIT PREPARED"</td><td>src/backend/access/transam/gtm.c</td></tr>
+        <tr><td class="k">主备 + Proxy，目的是消除单点</td><td>"To prevent GTM from SPOF ... GTM-Proxy can reconnect to the new GTM without sacrificing running transactions"</td><td>src/gtm/README</td></tr>
+        <tr><td class="k">模块确实分事务 / 快照 / 序列 / WAL / 备机</td><td>目录内文件：<code>gtm_txn.c</code>、<code>gtm_snap.c</code>、<code>gtm_seq.c</code>、<code>gtm_xlog.c</code>、<code>gtm_standby.c</code></td><td>src/gtm/main/</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section>
+    <h2><span class="num">07</span>复述检验：让同学用自己的话讲一遍</h2>
+    <div class="quiz">
+      <div class="q">
+        <p>① GTM 里存的是数据还是号？那它挂了，为什么集群就开不了新事务？</p>
+        <p class="ans">提示答案：存的是号和快照。新事务必须领号才能开始，唯一发号源没了这一步就卡住——这也正是要部署 Standby 的原因。</p>
+      </div>
+      <div class="q">
+        <p>② 一条跨两个 DN 的 UPDATE，谁在协调？GTM 在其中到底做了什么？</p>
+        <p class="ans">提示答案：CN 协调两阶段提交；GTM 只发 GXID 和快照，让两个 DN 确认提交的是同一个事务。</p>
+      </div>
+      <div class="q">
+        <p>③ 为什么 CN 可以随便加机器，GTM 却必须做主备？</p>
+        <p class="ans">提示答案：CN 是对等的、无状态的接入层；GTM 是全局唯一发号源，天然单点。</p>
+      </div>
+    </div>
+    <p style="margin-top:18px; font-size:13px; color:var(--ink-3)">60 秒口述模板：</p>
+    <div class="script">
+      "GTM 是 OpenTenBase 里的<b>全局事务管理器</b>。它<b>只做</b>三件事：发全局事务号、发全局快照、管全局序列；它<b>不做</b>两件事：不存业务数据、不跑 SQL。一条 SQL 进来先到 <b>CN</b>，CN 去 GTM 领号取快照，再把分片带着同一个快照下发到 <b>DN</b>，DN 本地执行，最后由 CN 汇总。所以 GTM 必须做主备——它一停，全集群都领不到新号。"
+    </div>
+  </section>
+
+  <section>
+    <h2><span class="num">08</span>参考资料</h2>
+    <ul class="refs">
+      <li>
+        <a href="https://github.com/OpenTenBase/OpenTenBase">github.com/OpenTenBase/OpenTenBase</a>
+        <span>项目官方仓库；架构概述见 README 的 Overview 一节</span>
+      </li>
+      <li>
+        <a href="https://github.com/OpenTenBase/OpenTenBase/blob/master/src/gtm/README">src/gtm/README</a>
+        <span>GTM 源码目录说明；GTM-Standby 与 GTM-Proxy 的原始描述在这里</span>
+      </li>
+      <li>
+        <a href="https://docs.opentenbase.org/guide/01-quickstart/">docs.opentenbase.org · 快速入门</a>
+        <span>官方文档对 CN / DN / GTM 三大模块的中文定义</span>
+      </li>
+      <li>
+        <a href="https://docs.opentenbase.org/guide/05-component/">docs.opentenbase.org · 组件安装及管理</a>
+        <span>GTM 主备的初始化、配置与 gtm_ctl 运维命令</span>
+      </li>
+      <li>
+        <a href="https://github.com/OpenTenBase/OpenTenBase/blob/master/src/include/gtm/gtm_gxid.h">src/include/gtm/gtm_gxid.h</a>
+        <span>GXID 的取值范围与回卷宏定义</span>
+      </li>
+      <li>
+        <a href="https://github.com/OpenTenBase/OpenTenBase/blob/master/src/backend/access/transam/gtm.c">src/backend/access/transam/gtm.c</a>
+        <span>CN/DN 侧与 GTM 的交互层：开事务、取快照、提交、序列</span>
+      </li>
+      <li>
+        <a href="https://github.com/OpenTenBase/OpenTenBase/tree/master/src/gtm/main">src/gtm/main/</a>
+        <span>GTM 服务端实现：gtm_txn / gtm_snap / gtm_seq / gtm_xlog / gtm_standby</span>
+      </li>
+    </ul>
+  </section>
+
+  <details>
+    <summary>附：图的 Mermaid 源码（可直接粘进支持 Mermaid 的工具重新渲染）</summary>
+    <pre>flowchart TD
+    APP["应用 / 客户端"]
+    CN["CN 协调节点&lt;br/&gt;入口 · 解析 · 分布式计划 · 汇总&lt;br/&gt;只存元数据"]
+    GTM["GTM 全局事务管理器&lt;br/&gt;· 发全局事务号 GXID&lt;br/&gt;· 发全局快照（可见性）&lt;br/&gt;· 管全局序列 nextval"]
+    GTMS["GTM Standby&lt;br/&gt;故障切换"]
+    DN1["DN1 · 数据节点&lt;br/&gt;分片 1 · 本地事务 + WAL"]
+    DN2["DN2 · 数据节点&lt;br/&gt;分片 2 · 本地事务 + WAL"]
+    DN3["DN3 · 数据节点&lt;br/&gt;分片 3 · 本地事务 + WAL"]
+
+    APP --&gt;|"① SQL"| CN
+    CN &lt;--&gt;|"② 领 GXID + 全局快照"| GTM
+    CN --&gt;|"③ 带同一个 GXID / 快照下发分片"| DN1
+    CN --&gt; DN2
+    CN --&gt; DN3
+    DN1 -.-&gt;|"本地事务也要取号"| GTM
+    DN2 -.-&gt; GTM
+    DN3 -.-&gt; GTM
+    DN1 -.-&gt;|"④ 2PC 对号：PREPARE → COMMIT"| CN
+    GTM --- GTMS</pre>
+  </details>
+
+  <div class="repolink">
+    <span class="label">项目仓库</span>
+    <a href="https://github.com/OpenTenBase/OpenTenBase">https://github.com/OpenTenBase/OpenTenBase</a>
+  </div>
+
+  <footer>
+    <span>核对基准：OpenTenBase 官方仓库 master 分支（README / src/gtm / src/include/gtm）与 docs.opentenbase.org</span>
+    <span>2026-11-07</span>
+  </footer>
+
+</div>
+</body>
+</html>
